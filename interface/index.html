@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Make Stylish Toggles Checkboxes  & Use in Form with PHP Ajax</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+ </head>
+ <body>
+  <br /><br />
+  <div class="container" style="width:600px;">
+   <h2 align="center">Arrosage</h2><br /><br />
+   <form method="post" id="insert_data">
+    <div class="form-group">
+     <div class="checkbox">
+      <input type="checkbox" name="zone1" id="zone1"  />
+     </div>
+     <div class="checkbox">
+      <input type="checkbox" name="zone2" id="zone2"  />
+     </div>
+    </div>
+    <input type="hidden" name="hidden_zone1" id="hidden_zone1" value="Zone 1: ON" />
+    <br />
+    <input type="submit" name="insert" id="action" class="btn btn-info" value="Insert" />
+   </form>
+  </div>
+ </body>
+</html>
+
+<script>
+$(document).ready(function(){
+ 
+ $('#zone1').bootstrapToggle({
+  on: 'Zone 1: ON',
+  off: 'Zone 1: OFF',
+  onstyle: 'success',
+  offstyle: 'danger'
+ });
+
+ $('#zone2').bootstrapToggle({
+  on: 'Zone 2: ON',
+  off: 'Zone 2: OFF',
+  onstyle: 'success',
+  offstyle: 'danger'
+ });
+ 
+
+
+
+ $('#zone1').change(function(){
+  if($(this).prop('checked'))
+  {
+   $('#hidden_zone1').val('1');
+  }
+  else
+  {
+   $('#hidden_zone1').val('2');
+  }
+ });
+
+ $('#insert_data').on('submit', function(event){
+  event.preventDefault();
+  if($('#name').val() == '')
+  {
+   alert("Please Enter Name");
+   return false;
+  }
+  else
+  {
+   var form_data = $(this).serialize();
+   $.ajax({
+    url:"insert.php",
+    method:"POST",
+    data:form_data,
+    success:function(data){
+     if(data == 'done')
+     {
+      $('#insert_data')[0].reset();
+      $('#gender').bootstrapToggle('on');
+      alert("Data Inserted");
+     }
+    }
+   });
+  }
+ });
+
+  $('#zone1').prop('checked', false);
+
+});
+</script>

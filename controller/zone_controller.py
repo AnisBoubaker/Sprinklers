@@ -3,6 +3,7 @@ import sys, getopt
 import RPi.GPIO as GPIO
 import time
 
+# Initialise pin mode
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 

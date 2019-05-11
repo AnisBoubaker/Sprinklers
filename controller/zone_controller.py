@@ -11,6 +11,7 @@ GPIO.setwarnings(False)
 # init list with pin numbers
 
 pinList = {1:4, 2:22, 3:6, 4:26}
+usage_str = 'Usage: zones.py [-h | -z <number> -s <ON|OFF|?>]'
 
 
 def set_zone(zone_num, state):
@@ -20,12 +21,12 @@ def set_zone(zone_num, state):
 
     # Activate/Deactivate the selected zone
     if state=='ON':
-        GPIO.output(pinList[zone], GPIO.HIGH)
+        GPIO.output(pinList[zone_num], GPIO.HIGH)
     else:
-        GPIO.output(pinList[zone], GPIO.LOW)
+        GPIO.output(pinList[zone_num], GPIO.LOW)
 
 def get_zone(zone_num):
-    status = GPIO.input(pinList[zone])
+    status = GPIO.input(pinList[zone_num])
     if status:
         return 'On'
     else:
@@ -41,7 +42,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hz:s:",["zone=","state="])
     except getopt.GetoptError:
-        print 'zones.py -z <number> -s <ON|OFF>'
+        print usage_str
         sys.exit(2)
 
     state = ''
@@ -49,7 +50,7 @@ def main(argv):
 
     for opt, arg in opts:
         if opt == '-h':
-            print 'zones.py -z <number> -s <ON|OFF>'
+            print usage_str
             sys.exit()
         elif opt in ("-z", "--zone"):
             zone=int(arg)
@@ -58,7 +59,7 @@ def main(argv):
 
     # Error contol: State could be either ON or OFF
     if state not in ('ON', 'OFF', '?'):
-        print 'zones.py -z <number> -s <ON|OFF>'
+        print usage_str
         sys.exit(3)
 
     # Error contol: Zone must be between 1..4
